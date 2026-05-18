@@ -65,7 +65,9 @@ export function VideoModal({ project, onClose }: Props) {
           </div>
         ) : (
           <div className="rounded-lg bg-background p-8 text-center shadow-2xl">
-            <h3 className="font-serif text-2xl text-foreground">{project.title}</h3>
+            <h3 className="font-serif text-2xl text-foreground">
+              {project.title || "Instagram Reel"}
+            </h3>
             <p className="mt-3 text-sm leading-relaxed text-muted">
               Instagram doesn&apos;t allow inline playback here. Open the reel directly:
             </p>
@@ -84,9 +86,15 @@ export function VideoModal({ project, onClose }: Props) {
         )}
 
         <div className="mt-4 flex flex-wrap items-center justify-between gap-3 text-background">
-          <div>
-            <h3 className="font-serif text-xl leading-tight">{project.title}</h3>
-            <p className="mt-1 max-w-2xl text-sm text-background/75">{project.description}</p>
+          <div className="min-w-0">
+            {project.title && (
+              <h3 className="font-serif text-xl leading-tight">{project.title}</h3>
+            )}
+            {project.description && (
+              <p className="mt-1 max-w-2xl text-sm text-background/75">
+                {project.description}
+              </p>
+            )}
           </div>
           <a
             href={project.url}

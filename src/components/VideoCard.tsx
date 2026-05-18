@@ -8,12 +8,6 @@ type Props = {
   onOpen: (project: Project) => void;
 };
 
-const platformLabel: Record<Project["platform"], string> = {
-  youtube: "YouTube",
-  instagram: "Instagram",
-  gdrive: "Google Drive",
-};
-
 export function VideoCard({ project, onOpen }: Props) {
   const isVertical = project.aspect === "9:16";
 
@@ -28,13 +22,21 @@ export function VideoCard({ project, onOpen }: Props) {
           isVertical ? "aspect-[9/16]" : "aspect-video"
         }`}
       >
-        <Image
-          src={project.thumbnail}
-          alt={project.title}
-          fill
-          sizes={isVertical ? "(max-width: 768px) 50vw, 25vw" : "(max-width: 768px) 100vw, 50vw"}
-          className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-        />
+        {project.thumbnail ? (
+          <Image
+            src={project.thumbnail}
+            alt={project.title || "Untitled video"}
+            fill
+            sizes={
+              isVertical
+                ? "(max-width: 768px) 50vw, 25vw"
+                : "(max-width: 768px) 100vw, 50vw"
+            }
+            className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+          />
+        ) : (
+          <Placeholder />
+        )}
 
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
@@ -50,24 +52,40 @@ export function VideoCard({ project, onOpen }: Props) {
           </div>
         </div>
 
-        <div className="absolute bottom-2 right-2 rounded bg-background/90 px-1.5 py-0.5 text-[11px] font-medium tracking-wide text-foreground/80 backdrop-blur-sm">
-          {project.duration}
-        </div>
+        {project.duration && (
+          <div className="absolute bottom-2 right-2 rounded bg-background/90 px-1.5 py-0.5 text-[11px] font-medium tracking-wide text-foreground/80 backdrop-blur-sm">
+            {project.duration}
+          </div>
+        )}
       </div>
 
-      <div className="mt-3 flex items-start justify-between gap-3">
-        <div>
-          <h3 className="text-base font-medium leading-snug text-foreground">
+      <div className="mt-3">
+        {project.title && (
+          <h3 className="line-clamp-2 min-h-[2.75rem] text-base font-medium leading-snug text-foreground">
             {project.title}
           </h3>
-          <p className="mt-1 text-sm leading-relaxed text-muted">
+        )}
+        {project.description && (
+          <p className="mt-1 line-clamp-2 text-sm leading-relaxed text-muted">
             {project.description}
           </p>
-        </div>
-        <span className="mt-0.5 shrink-0 text-[10px] uppercase tracking-[0.14em] text-muted">
-          {platformLabel[project.platform]}
-        </span>
+        )}
       </div>
     </button>
+  );
+}
+
+function Placeholder() {
+  return (
+    <div className="absolute inset-0 flex items-center justify-center bg-[#f3ebe1]">
+      <svg
+        viewBox="0 0 24 24"
+        className="h-10 w-10 fill-accent/40"
+        aria-hidden="true"
+      >
+        <path d="M8 5v14l11-7z" />
+      </svg>
+      <span className="sr-only">video</span>
+    </div>
   );
 }

@@ -9,38 +9,64 @@ import { embedUrl, groups, showreel, type Project } from "@/lib/projects";
 export default function Home() {
   const [active, setActive] = useState<Project | null>(null);
 
+  const shortform = groups.find((g) => g.id === "shortform");
+  const otherGroups = groups.filter((g) => g.id !== "shortform");
+
   return (
     <main className="mx-auto max-w-6xl px-6 pb-32 pt-16 sm:px-10 sm:pt-24">
       <Header />
 
       <Hero onPlay={() => setActive(showreel)} />
 
-      <Showreel onPlay={() => setActive(showreel)} />
+      {shortform && <ProjectGroupSection group={shortform} onOpen={setActive} />}
 
-      {groups.map((group) => (
-        <Section key={group.id} id={group.id}>
-          <SectionHeader title={group.title} blurb={group.blurb} />
-          {group.layout === "reels" ? (
-            <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 sm:gap-x-8">
-              {group.projects.map((p) => (
-                <VideoCard key={p.id} project={p} onOpen={setActive} />
-              ))}
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 gap-x-8 gap-y-14 md:grid-cols-2">
-              {group.projects.map((p) => (
-                <VideoCard key={p.id} project={p} onOpen={setActive} />
-              ))}
-            </div>
-          )}
-        </Section>
+      {otherGroups.map((group) => (
+        <ProjectGroupSection key={group.id} group={group} onOpen={setActive} />
       ))}
+
+      <Showreel onPlay={() => setActive(showreel)} />
 
       <Contact />
       <Footer />
 
       <VideoModal project={active} onClose={() => setActive(null)} />
     </main>
+  );
+}
+
+function ProjectGroupSection({
+  group,
+  onOpen,
+}: {
+  group: (typeof groups)[number];
+  onOpen: (p: Project) => void;
+}) {
+  return (
+    <Section id={group.id}>
+      <SectionHeader title={group.title} blurb={group.blurb} />
+      {group.layout === "reels" ? (
+        <div className="space-y-10">
+          <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 sm:gap-x-8">
+            {group.projects.slice(0, 3).map((p) => (
+              <VideoCard key={p.id} project={p} onOpen={onOpen} />
+            ))}
+          </div>
+          {group.projects.length > 3 && (
+            <div className="grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-4 sm:gap-x-6">
+              {group.projects.slice(3).map((p) => (
+                <VideoCard key={p.id} project={p} onOpen={onOpen} />
+              ))}
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 gap-x-8 gap-y-14 md:grid-cols-2">
+          {group.projects.map((p) => (
+            <VideoCard key={p.id} project={p} onOpen={onOpen} />
+          ))}
+        </div>
+      )}
+    </Section>
   );
 }
 
@@ -51,7 +77,7 @@ function Header() {
         Arina Gusak
       </a>
       <nav className="hidden gap-7 text-sm text-muted sm:flex">
-        <a href="#work" className="transition-colors hover:text-foreground">
+        <a href="#shortform" className="transition-colors hover:text-foreground">
           Work
         </a>
         <a href="#about" className="transition-colors hover:text-foreground">
@@ -74,11 +100,10 @@ function Hero({ onPlay }: { onPlay: () => void }) {
         </p>
         <h1 className="mt-5 font-serif text-5xl leading-[0.95] tracking-tight sm:text-6xl md:text-7xl">
           Arina <br />
-          <span className="italic">Gusak</span>
+          Gusak
         </h1>
         <p className="mt-8 max-w-md text-lg leading-relaxed text-foreground/80">
-          Animation student at Bezalel working with 2D animation, motion design,
-          and video editing — from script to final cut.
+          Creating visual stories — from script to final cut.
         </p>
         <div className="mt-10 flex flex-wrap items-center gap-4">
           <button
@@ -89,7 +114,7 @@ function Hero({ onPlay }: { onPlay: () => void }) {
             <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 fill-background">
               <path d="M8 5v14l11-7z" />
             </svg>
-            Watch showreel
+            Animation showreel
           </button>
           <a
             href="#contact"
@@ -101,7 +126,7 @@ function Hero({ onPlay }: { onPlay: () => void }) {
       </div>
 
       <div id="about" className="flex flex-col gap-6">
-        <div className="relative aspect-[4/5] w-full max-w-sm overflow-hidden rounded-md bg-neutral-100 ring-1 ring-border md:ml-auto">
+        <div className="relative aspect-[4/5] w-full max-w-48 overflow-hidden rounded-md bg-neutral-100 ring-1 ring-border md:ml-auto">
           <Image
             src="/images/headshot.jpg"
             alt="Portrait of Arina Gusak"
@@ -112,15 +137,19 @@ function Hero({ onPlay }: { onPlay: () => void }) {
           />
         </div>
         <div className="max-w-sm text-sm leading-relaxed text-muted md:ml-auto">
-          <p>
-            Based in Tel Aviv. Fourth-year animation student at Bezalel
-            Academy. I&apos;ve worked on short animated films, educational
-            content for the Hebrew University and the IDF, and social-media
-            video with creators and brands.
+          <p>Hi! :)</p>
+          <p className="mt-4">
+            I am an animation graduate from Bezalel Academy of Arts and Design
+            with experience creating short animated films, educational content,
+            and social-media videos for creators and brands.
           </p>
           <p className="mt-4">
-            Comfortable working solo end-to-end — script, illustration, sound,
-            edit. Languages: English, Hebrew, Russian.
+            I specialize in animation, motion design, and video editing, and
+            I&apos;m a big lover of creative challenges and visual storytelling.
+          </p>
+          <p className="mt-4">
+            Comfortable working independently across the full production
+            pipeline — script, production, post-production, sound, and editing.
           </p>
         </div>
       </div>
@@ -131,9 +160,9 @@ function Hero({ onPlay }: { onPlay: () => void }) {
 function Showreel({ onPlay }: { onPlay: () => void }) {
   const yt = embedUrl(showreel);
   return (
-    <section id="work" className="mt-32 sm:mt-40">
+    <section id="animation-showreel" className="mt-32 sm:mt-40">
       <SectionHeader
-        title="Showreel"
+        title="Animation Showreel"
         blurb="A short compilation of 2D and After Effects animation work."
       />
       <div className="relative">
@@ -218,12 +247,12 @@ function Contact() {
           <li className="text-muted">Tel Aviv, Israel</li>
           <li>
             <a
-              href="https://www.instagram.com/arinagusakstudio/"
+              href="https://www.instagram.com/arishagusak/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-xs uppercase tracking-[0.16em] text-muted transition-colors hover:text-foreground"
             >
-              @arinagusakstudio ↗
+              @arishagusak ↗
             </a>
           </li>
         </ul>
@@ -236,7 +265,9 @@ function Footer() {
   return (
     <footer className="mt-24 flex flex-col items-start justify-between gap-4 border-t border-border pt-8 text-xs text-muted sm:flex-row sm:items-center">
       <p>© {new Date().getFullYear()} Arina Gusak. All work shown here is © its respective owners.</p>
-      <p className="uppercase tracking-[0.16em]">Made with care in Tel Aviv</p>
+      <p className="uppercase tracking-[0.16em]">
+        Thanks for scrolling through! Feel free to point out any typos :)
+      </p>
     </footer>
   );
 }
