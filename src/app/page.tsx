@@ -13,7 +13,7 @@ export default function Home() {
   const otherGroups = groups.filter((g) => g.id !== "shortform");
 
   return (
-    <main className="mx-auto max-w-6xl px-6 pb-32 pt-16 sm:px-10 sm:pt-24">
+    <main className="mx-auto max-w-6xl px-6 pb-32 pt-6 sm:px-10 sm:pt-24">
       <Header />
 
       <Hero onPlay={() => setActive(showreel)} />
@@ -45,14 +45,14 @@ function ProjectGroupSection({
     <Section id={group.id}>
       <SectionHeader title={group.title} blurb={group.blurb} />
       {group.layout === "reels" ? (
-        <div className="space-y-10">
-          <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 sm:gap-x-8">
+        <div className="space-y-8 sm:space-y-10">
+          <div className="grid grid-cols-3 gap-x-3 gap-y-8 sm:gap-x-8 sm:gap-y-10">
             {group.projects.slice(0, 3).map((p) => (
               <VideoCard key={p.id} project={p} onOpen={onOpen} />
             ))}
           </div>
           {group.projects.length > 3 && (
-            <div className="grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-4 sm:gap-x-6">
+            <div className="grid grid-cols-4 gap-x-2 gap-y-8 sm:gap-x-6 sm:gap-y-10">
               {group.projects.slice(3).map((p) => (
                 <VideoCard key={p.id} project={p} onOpen={onOpen} />
               ))}
@@ -72,10 +72,7 @@ function ProjectGroupSection({
 
 function Header() {
   return (
-    <header className="flex items-center justify-between">
-      <a href="#top" className="font-serif text-lg tracking-tight">
-        Arina Gusak
-      </a>
+    <header className="flex items-center justify-end">
       <nav className="hidden gap-7 text-sm text-muted sm:flex">
         <a href="#shortform" className="transition-colors hover:text-foreground">
           Work
@@ -93,7 +90,7 @@ function Header() {
 
 function Hero({ onPlay }: { onPlay: () => void }) {
   return (
-    <section id="top" className="mt-20 grid gap-12 sm:mt-32 md:grid-cols-[1.4fr_1fr] md:gap-16">
+    <section id="top" className="mt-6 grid gap-12 sm:mt-32 md:grid-cols-[1.4fr_1fr] md:gap-16">
       <div className="flex flex-col justify-center">
         <p className="text-sm uppercase tracking-[0.18em] text-muted">
           Animation · Motion · Video
@@ -103,7 +100,8 @@ function Hero({ onPlay }: { onPlay: () => void }) {
           Gusak
         </h1>
         <p className="mt-8 max-w-md text-lg leading-relaxed text-foreground/80">
-          Creating visual stories — from script to final cut.
+          Creating visual stories —<br className="sm:hidden" /> from script to
+          final cut.
         </p>
         <div className="mt-10 flex flex-wrap items-center gap-4">
           <button
@@ -125,29 +123,29 @@ function Hero({ onPlay }: { onPlay: () => void }) {
         </div>
       </div>
 
-      <div id="about" className="flex flex-col gap-6">
-        <div className="relative aspect-[4/5] w-full max-w-48 overflow-hidden rounded-md bg-neutral-100 ring-1 ring-border md:ml-auto">
+      <div id="about" className="grid grid-cols-[auto_1fr] items-start gap-4 md:grid-cols-1 md:gap-6">
+        <div className="relative aspect-[4/5] w-20 overflow-hidden rounded-md bg-neutral-100 ring-1 ring-border md:ml-auto md:w-full md:max-w-48">
           <Image
             src="/images/headshot.jpg"
             alt="Portrait of Arina Gusak"
             fill
-            sizes="(max-width: 768px) 90vw, 320px"
+            sizes="(max-width: 768px) 80px, 192px"
             className="object-cover"
             priority
           />
         </div>
-        <div className="max-w-sm text-sm leading-relaxed text-muted md:ml-auto">
+        <div className="min-w-0 text-xs leading-relaxed text-muted sm:text-sm md:ml-auto md:max-w-sm">
           <p>Hi! :)</p>
-          <p className="mt-4">
+          <p className="mt-3 md:mt-4">
             I am an animation graduate from Bezalel Academy of Arts and Design
             with experience creating short animated films, educational content,
             and social-media videos for creators and brands.
           </p>
-          <p className="mt-4">
+          <p className="mt-3 md:mt-4">
             I specialize in animation, motion design, and video editing, and
             I&apos;m a big lover of creative challenges and visual storytelling.
           </p>
-          <p className="mt-4">
+          <p className="mt-3 md:mt-4">
             Comfortable working independently across the full production
             pipeline — script, production, post-production, sound, and editing.
           </p>

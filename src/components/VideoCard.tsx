@@ -61,7 +61,7 @@ export function VideoCard({ project, onOpen }: Props) {
 
       <div className="mt-3">
         {project.title && (
-          <h3 className="line-clamp-2 min-h-[2.75rem] text-base font-medium leading-snug text-foreground">
+          <h3 className="line-clamp-2 min-h-[1.75rem] text-[10px] font-medium leading-snug text-foreground sm:min-h-[2.75rem] sm:text-base">
             {project.title}
           </h3>
         )}
