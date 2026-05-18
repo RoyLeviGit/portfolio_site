@@ -99,6 +99,18 @@ function Hero({ onPlay }: { onPlay: () => void }) {
           Arina <br />
           Gusak
         </h1>
+
+        <div className="relative -mx-6 mt-6 aspect-video overflow-hidden bg-black sm:-mx-10 md:order-last md:mx-0 md:mt-10 md:rounded-md md:shadow-sm md:ring-1 md:ring-border">
+          <iframe
+            src="https://www.youtube.com/embed/paxp9HqFeH8?autoplay=1&mute=1&loop=1&playlist=paxp9HqFeH8&controls=0&playsinline=1&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1"
+            title="Animation Showreel"
+            allow="autoplay; encrypted-media"
+            className="absolute inset-0 h-full w-full border-0"
+            aria-hidden="true"
+            tabIndex={-1}
+          />
+        </div>
+
         <p className="mt-8 max-w-md text-lg leading-relaxed text-foreground/80">
           Creating visual stories —<br className="sm:hidden" /> from script to
           final cut.
