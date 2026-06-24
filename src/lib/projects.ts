@@ -52,6 +52,18 @@ export const showreel: Project = {
   aspect: "16:9",
 };
 
+export const shortformShowreel: Project = {
+  id: "shortform-showreel",
+  title: "Short-Form Showreel",
+  description:
+    "A short-form showreel featuring AI-assisted production, motion design, video editing, and animation.",
+  duration: "01:03",
+  platform: "gdrive",
+  url: "https://drive.google.com/file/d/1bD7um1zujITAnmlTTOelDiE-8fozS9p8/view",
+  thumbnail: "",
+  aspect: "9:16",
+};
+
 export const groups: ProjectGroup[] = [
   {
     id: "production",

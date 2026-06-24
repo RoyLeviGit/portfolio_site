@@ -4,7 +4,13 @@ import { useState } from "react";
 import Image from "next/image";
 import { VideoCard } from "@/components/VideoCard";
 import { VideoModal } from "@/components/VideoModal";
-import { embedUrl, groups, showreel, type Project } from "@/lib/projects";
+import {
+  embedUrl,
+  groups,
+  shortformShowreel,
+  showreel,
+  type Project,
+} from "@/lib/projects";
 
 export default function Home() {
   const [active, setActive] = useState<Project | null>(null);
@@ -16,7 +22,9 @@ export default function Home() {
     <main className="mx-auto max-w-6xl px-6 pb-32 pt-6 sm:px-10 sm:pt-24">
       <Header />
 
-      <Hero onPlay={() => setActive(showreel)} />
+      <Hero />
+
+      <About />
 
       {shortform && <ProjectGroupSection group={shortform} onOpen={setActive} />}
 
@@ -24,6 +32,9 @@ export default function Home() {
         <ProjectGroupSection key={group.id} group={group} onOpen={setActive} />
       ))}
 
+      <ShortformShowreelSection
+        onPlay={() => setActive(shortformShowreel)}
+      />
       <Showreel onPlay={() => setActive(showreel)} />
 
       <Contact />
@@ -52,10 +63,14 @@ function ProjectGroupSection({
             ))}
           </div>
           {group.projects.length > 3 && (
-            <div className="grid grid-cols-4 gap-x-2 gap-y-8 sm:gap-x-6 sm:gap-y-10">
-              {group.projects.slice(3).map((p) => (
-                <VideoCard key={p.id} project={p} onOpen={onOpen} />
-              ))}
+            <div className="-mx-6 overflow-x-auto px-6 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:-mx-10 sm:px-10 sm:pb-4 sm:[scrollbar-color:rgb(0_0_0/0.25)_transparent] sm:[scrollbar-width:thin] sm:[&::-webkit-scrollbar-thumb:hover]:bg-foreground/45 sm:[&::-webkit-scrollbar-thumb]:rounded-full sm:[&::-webkit-scrollbar-thumb]:bg-foreground/25 sm:[&::-webkit-scrollbar-track]:bg-transparent sm:[&::-webkit-scrollbar]:block sm:[&::-webkit-scrollbar]:h-1.5">
+              <div className="flex gap-3 sm:gap-6">
+                {group.projects.slice(3).map((p) => (
+                  <div key={p.id} className="w-[25%] shrink-0 sm:w-[22%]">
+                    <VideoCard project={p} onOpen={onOpen} />
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </div>
@@ -88,79 +103,144 @@ function Header() {
   );
 }
 
-function Hero({ onPlay }: { onPlay: () => void }) {
+function Hero() {
   return (
-    <section id="top" className="mt-6 grid gap-12 sm:mt-32 md:grid-cols-[1.4fr_1fr] md:gap-16">
-      <div className="flex flex-col justify-center">
-        <p className="text-sm uppercase tracking-[0.18em] text-muted">
+    <section
+      id="top"
+      className="mt-6 grid grid-cols-[1fr_auto] gap-5 sm:mt-32 sm:gap-10 md:grid-cols-[1.5fr_auto] md:items-center md:gap-16"
+    >
+      <div className="flex flex-col">
+        <p className="text-[10px] uppercase tracking-[0.18em] text-muted sm:text-sm">
           Animation · Motion · Video
         </p>
-        <h1 className="mt-5 font-serif text-5xl leading-[0.95] tracking-tight sm:text-6xl md:text-7xl">
+        <h1 className="mt-3 font-serif text-4xl leading-[0.95] tracking-tight sm:mt-5 sm:text-6xl md:text-7xl">
           Arina <br />
           Gusak
         </h1>
 
-        <div className="relative -mx-6 mt-6 aspect-video overflow-hidden bg-black sm:-mx-10 md:order-last md:mx-0 md:mt-10 md:rounded-md md:shadow-sm md:ring-1 md:ring-border">
-          <iframe
-            src="https://www.youtube.com/embed/paxp9HqFeH8?autoplay=1&mute=1&loop=1&playlist=paxp9HqFeH8&controls=0&playsinline=1&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1"
-            title="Animation Showreel"
-            allow="autoplay; encrypted-media"
-            className="absolute inset-0 h-full w-full border-0"
-            aria-hidden="true"
-            tabIndex={-1}
-          />
-        </div>
-
-        <p className="mt-8 max-w-md text-lg leading-relaxed text-foreground/80">
-          Creating visual stories —<br className="sm:hidden" /> from script to
-          final cut.
+        <p className="mt-5 text-xs leading-relaxed text-foreground/80 sm:mt-8 sm:max-w-md sm:text-lg">
+          Creating visual stories — from script to final cut.
         </p>
-        <div className="mt-10 flex flex-wrap items-center gap-4">
-          <button
-            type="button"
-            onClick={onPlay}
-            className="inline-flex items-center gap-2 rounded-full bg-foreground px-5 py-2.5 text-sm text-background transition-opacity hover:opacity-90"
-          >
-            <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 fill-background">
-              <path d="M8 5v14l11-7z" />
-            </svg>
-            Animation showreel
-          </button>
+
+        <div className="mt-5 grid grid-cols-1 gap-2 sm:mt-8 sm:max-w-xs sm:gap-3">
           <a
-            href="#contact"
-            className="text-sm uppercase tracking-[0.16em] text-foreground/70 transition-colors hover:text-foreground"
+            href="#shortform-showreel"
+            className="inline-flex items-center justify-center gap-1 rounded-full bg-foreground px-2 py-2 text-xs text-background transition-opacity hover:opacity-90 sm:gap-2 sm:px-5 sm:py-2.5 sm:text-sm"
           >
-            Get in touch →
+            <PlayIcon />
+            Short-Form Showreel
+          </a>
+          <a
+            href="#animation-showreel"
+            className="inline-flex items-center justify-center gap-1 rounded-full bg-foreground px-2 py-2 text-xs text-background transition-opacity hover:opacity-90 sm:gap-2 sm:px-5 sm:py-2.5 sm:text-sm"
+          >
+            <PlayIcon />
+            Animation Showreel
           </a>
         </div>
+
+        <a
+          href="#contact"
+          className="mt-3 inline-block text-[10px] uppercase tracking-[0.14em] text-foreground/70 transition-colors hover:text-foreground sm:mt-5 sm:text-sm sm:tracking-[0.16em]"
+        >
+          Get in touch →
+        </a>
       </div>
 
-      <div id="about" className="grid grid-cols-[auto_1fr] items-start gap-4 md:grid-cols-1 md:gap-6">
-        <div className="relative aspect-[4/5] w-20 overflow-hidden rounded-md bg-neutral-100 ring-1 ring-border md:ml-auto md:w-full md:max-w-48">
+      <div className="shrink-0">
+        <HeroVideoLoop />
+      </div>
+    </section>
+  );
+}
+
+function PlayIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-3 w-3 shrink-0 fill-background sm:h-3.5 sm:w-3.5">
+      <path d="M8 5v14l11-7z" />
+    </svg>
+  );
+}
+
+function HeroVideoLoop() {
+  return (
+    <div className="relative aspect-[9/16] w-[140px] overflow-hidden rounded-md bg-black shadow-sm ring-1 ring-border sm:w-[240px] md:w-[320px]">
+      <video
+        src="/videos/short-form-showreel.mp4"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        className="absolute inset-0 h-full w-full object-cover"
+        aria-hidden="true"
+      />
+    </div>
+  );
+}
+
+function About() {
+  return (
+    <section id="about" className="mt-12 sm:mt-16">
+      <div className="grid grid-cols-[auto_1fr] items-start gap-5 sm:gap-10">
+        <div className="relative aspect-[4/5] w-24 shrink-0 overflow-hidden rounded-md bg-neutral-100 ring-1 ring-border sm:w-40">
           <Image
             src="/images/headshot.jpg"
             alt="Portrait of Arina Gusak"
             fill
-            sizes="(max-width: 768px) 80px, 192px"
+            sizes="(max-width: 640px) 96px, 160px"
             className="object-cover"
             priority
           />
         </div>
-        <div className="min-w-0 text-xs leading-relaxed text-muted sm:text-sm md:ml-auto md:max-w-sm">
+        <div className="min-w-0 text-sm leading-relaxed text-muted sm:text-base">
           <p>Hi! :)</p>
-          <p className="mt-3 md:mt-4">
+          <p className="mt-3 sm:mt-4">
             I am an animation graduate from Bezalel Academy of Arts and Design
             with experience creating short animated films, educational content,
             and social-media videos for creators and brands.
           </p>
-          <p className="mt-3 md:mt-4">
+          <p className="mt-3 sm:mt-4">
             I specialize in animation, motion design, and video editing, and
             I&apos;m a big lover of creative challenges and visual storytelling.
           </p>
-          <p className="mt-3 md:mt-4">
+          <p className="mt-3 sm:mt-4">
             Comfortable working independently across the full production
             pipeline — script, production, post-production, sound, and editing.
           </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ShortformShowreelSection({ onPlay }: { onPlay: () => void }) {
+  return (
+    <section id="shortform-showreel" className="mt-32 sm:mt-40">
+      <SectionHeader
+        title="Short-Form Showreel"
+        blurb="A short-form showreel featuring AI-assisted production, motion design, video editing, and animation."
+      />
+      <div className="relative">
+        <div className="mx-auto max-w-[360px] overflow-hidden rounded-md bg-black shadow-sm ring-1 ring-border">
+          <div className="aspect-[9/16]">
+            <video
+              src="/videos/short-form-showreel.mp4"
+              controls
+              playsInline
+              preload="metadata"
+              className="h-full w-full"
+            />
+          </div>
+        </div>
+        <div className="mt-3 flex justify-center">
+          <button
+            type="button"
+            onClick={onPlay}
+            className="text-xs uppercase tracking-[0.16em] text-muted transition-colors hover:text-foreground"
+          >
+            Open fullscreen ↗
+          </button>
         </div>
       </div>
     </section>
