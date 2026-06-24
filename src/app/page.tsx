@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { VideoCard } from "@/components/VideoCard";
 import { VideoModal } from "@/components/VideoModal";
@@ -14,6 +14,15 @@ import {
 
 export default function Home() {
   const [active, setActive] = useState<Project | null>(null);
+
+  useEffect(() => {
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+    if (!window.location.hash) {
+      window.scrollTo(0, 0);
+    }
+  }, []);
 
   const shortform = groups.find((g) => g.id === "shortform");
   const aiAssisted = groups.find((g) => g.id === "ai-assisted");
