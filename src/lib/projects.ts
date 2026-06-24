@@ -15,7 +15,7 @@ export type ProjectGroup = {
   id: string;
   title: string;
   blurb?: string;
-  layout: "feature" | "wide" | "reels";
+  layout: "feature" | "wide" | "reels" | "compact";
   projects: Project[];
 };
 
@@ -66,8 +66,45 @@ export const shortformShowreel: Project = {
 
 export const groups: ProjectGroup[] = [
   {
+    id: "ai-assisted",
+    title: "AI-Assisted Productions",
+    layout: "compact",
+    projects: [
+      {
+        id: "dizengof-adidas",
+        title: "Dizengof Center X Adidas",
+        description: "",
+        duration: "",
+        platform: "gdrive",
+        url: "https://drive.google.com/file/d/18khn1ffDbR4AQ8rjsk0ZDOQYmhBnBN51/view",
+        thumbnail: "/thumbnails/dizengof-adidas.jpg",
+        aspect: "9:16",
+      },
+      {
+        id: "reel-DUqSqY5jYVi",
+        title: "Mententen Ramen & Sake Workshop",
+        description: "",
+        duration: "",
+        platform: "instagram",
+        url: "https://www.instagram.com/reel/DUqSqY5jYVi/",
+        thumbnail: "/thumbnails/ramen-mententen.jpg",
+        aspect: "9:16",
+      },
+      {
+        id: "reel-DT8MFwoDbKb",
+        title: "Dizengof Center Tu B'Shevat",
+        description: "",
+        duration: "",
+        platform: "instagram",
+        url: "https://www.instagram.com/reel/DT8MFwoDbKb/",
+        thumbnail: "/thumbnails/dizengof-tu-bshevat.jpg",
+        aspect: "9:16",
+      },
+    ],
+  },
+  {
     id: "production",
-    title: "Video editing & Motion design",
+    title: "Video Editing & Motion Design",
     blurb:
       "Educational and commercial work — from scripting and animation to live-action editing.",
     layout: "wide",
@@ -126,7 +163,7 @@ export const groups: ProjectGroup[] = [
     projects: [
       {
         id: "original-commercial",
-        title: "Original's commercial",
+        title: "Original's Commercial",
         description: "",
         duration: "",
         platform: "instagram",
@@ -136,7 +173,7 @@ export const groups: ProjectGroup[] = [
       },
       {
         id: "cochva-2",
-        title: "noa cochva Post 10/7 Public Advocacy",
+        title: "Noa Cochva Post 10/7 Public Advocacy",
         description: "",
         duration: "",
         platform: "instagram",
@@ -145,38 +182,8 @@ export const groups: ProjectGroup[] = [
         aspect: "9:16",
       },
       {
-        id: "reel-DTgC7GpCJd1",
-        title: "we shoes commercial ft. gal gvaram",
-        description: "",
-        duration: "",
-        platform: "instagram",
-        url: "https://www.instagram.com/reel/DTgC7GpCJd1/",
-        thumbnail: "/thumbnails/weshoes-gal.jpg",
-        aspect: "9:16",
-      },
-      {
-        id: "reel-DT8MFwoDbKb",
-        title: "Dizengof Center Tu B'Shevat",
-        description: "",
-        duration: "",
-        platform: "instagram",
-        url: "https://www.instagram.com/reel/DT8MFwoDbKb/",
-        thumbnail: "/thumbnails/dizengof-tu-bshevat.jpg",
-        aspect: "9:16",
-      },
-      {
-        id: "reel-DUqSqY5jYVi",
-        title: "ramen & sake workshop ft. Mententen",
-        description: "",
-        duration: "",
-        platform: "instagram",
-        url: "https://www.instagram.com/reel/DUqSqY5jYVi/",
-        thumbnail: "/thumbnails/ramen-mententen.jpg",
-        aspect: "9:16",
-      },
-      {
         id: "reel-DVGlyL4jRfs",
-        title: "Barbie commercial ft. yael filipoviz",
+        title: "Barbie Commercial ft. Yael Filipoviz",
         description: "",
         duration: "",
         platform: "instagram",
@@ -185,8 +192,18 @@ export const groups: ProjectGroup[] = [
         aspect: "9:16",
       },
       {
+        id: "reel-DTgC7GpCJd1",
+        title: "We Shoes Commercial ft. Gal Gvaram",
+        description: "",
+        duration: "",
+        platform: "instagram",
+        url: "https://www.instagram.com/reel/DTgC7GpCJd1/",
+        thumbnail: "/thumbnails/weshoes-gal.jpg",
+        aspect: "9:16",
+      },
+      {
         id: "dizengof-test",
-        title: "DizenArina Homogof Center Test",
+        title: "Dizengof Center Puzzles",
         description: "",
         duration: "",
         platform: "gdrive",
@@ -195,13 +212,33 @@ export const groups: ProjectGroup[] = [
         aspect: "9:16",
       },
       {
+        id: "reel-DZplXmSNtLW",
+        title: "Dizengof Center Wine Festival",
+        description: "",
+        duration: "",
+        platform: "instagram",
+        url: "https://www.instagram.com/reel/DZplXmSNtLW/",
+        thumbnail: "/thumbnails/dizengof-wine-festival.jpg",
+        aspect: "9:16",
+      },
+      {
         id: "cochva-1",
-        title: "noa cochva Post 10/7 Public Advocacy",
+        title: "Noa Cochva Post 10/7 Public Advocacy",
         description: "",
         duration: "",
         platform: "instagram",
         url: "https://www.instagram.com/reel/C0raCZ9oAuj/",
         thumbnail: "/thumbnails/cochva-israel-map.jpg",
+        aspect: "9:16",
+      },
+      {
+        id: "short-2025",
+        title: "Short-Form Test — 2025",
+        description: "",
+        duration: "",
+        platform: "gdrive",
+        url: "https://drive.google.com/file/d/1Fn0QODsyCVlYlvgFfwts_UcL0DktZ5Ei/view",
+        thumbnail: "/thumbnails/short-2025.jpg",
         aspect: "9:16",
       },
       {
@@ -222,16 +259,6 @@ export const groups: ProjectGroup[] = [
         platform: "gdrive",
         url: "https://drive.google.com/file/d/19KiQZ8hYauTmRAW19M4de6FJUO2SsFOS/view",
         thumbnail: "/thumbnails/short-vanitas.jpg",
-        aspect: "9:16",
-      },
-      {
-        id: "short-2025",
-        title: "Short-Form Test — 2025",
-        description: "",
-        duration: "",
-        platform: "gdrive",
-        url: "https://drive.google.com/file/d/1Fn0QODsyCVlYlvgFfwts_UcL0DktZ5Ei/view",
-        thumbnail: "/thumbnails/short-2025.jpg",
         aspect: "9:16",
       },
     ],

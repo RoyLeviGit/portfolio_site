@@ -16,17 +16,27 @@ export default function Home() {
   const [active, setActive] = useState<Project | null>(null);
 
   const shortform = groups.find((g) => g.id === "shortform");
-  const otherGroups = groups.filter((g) => g.id !== "shortform");
+  const aiAssisted = groups.find((g) => g.id === "ai-assisted");
+  const otherGroups = groups.filter(
+    (g) => g.id !== "shortform" && g.id !== "ai-assisted",
+  );
 
   return (
-    <main className="mx-auto max-w-6xl px-6 pb-32 pt-6 sm:px-10 sm:pt-24">
+    <main className="mx-auto max-w-6xl px-6 pb-24 pt-6 sm:px-10 sm:pt-16">
       <Header />
 
       <Hero />
 
       <About />
 
-      {shortform && <ProjectGroupSection group={shortform} onOpen={setActive} />}
+      {shortform && (
+        <>
+          <ProjectGroupSection group={shortform} onOpen={setActive} />
+          {aiAssisted && (
+            <AiAssistedSubsection group={aiAssisted} onOpen={setActive} />
+          )}
+        </>
+      )}
 
       {otherGroups.map((group) => (
         <ProjectGroupSection key={group.id} group={group} onOpen={setActive} />
@@ -42,6 +52,27 @@ export default function Home() {
 
       <VideoModal project={active} onClose={() => setActive(null)} />
     </main>
+  );
+}
+
+function AiAssistedSubsection({
+  group,
+  onOpen,
+}: {
+  group: (typeof groups)[number];
+  onOpen: (p: Project) => void;
+}) {
+  return (
+    <section id={group.id} className="mt-12 sm:mt-14">
+      <h3 className="mb-6 font-serif text-2xl leading-tight tracking-tight sm:mb-8 sm:text-3xl">
+        {group.title}
+      </h3>
+      <div className="grid grid-cols-3 gap-x-3 gap-y-8 sm:gap-x-8 sm:gap-y-10">
+        {group.projects.map((p) => (
+          <VideoCard key={p.id} project={p} onOpen={onOpen} />
+        ))}
+      </div>
+    </section>
   );
 }
 
@@ -73,6 +104,14 @@ function ProjectGroupSection({
               </div>
             </div>
           )}
+        </div>
+      ) : group.layout === "compact" ? (
+        <div className="flex flex-wrap gap-3 sm:gap-6">
+          {group.projects.map((p) => (
+            <div key={p.id} className="w-[25%] sm:w-[22%]">
+              <VideoCard project={p} onOpen={onOpen} />
+            </div>
+          ))}
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-x-8 gap-y-14 md:grid-cols-2">
@@ -107,7 +146,7 @@ function Hero() {
   return (
     <section
       id="top"
-      className="mt-6 grid grid-cols-[1fr_auto] gap-5 sm:mt-32 sm:gap-10 md:grid-cols-[1.5fr_auto] md:items-center md:gap-16"
+      className="mt-4 grid grid-cols-[1fr_auto] gap-5 sm:mt-12 sm:gap-10 md:grid-cols-[1.5fr_auto] md:items-center md:gap-16"
     >
       <div className="flex flex-col">
         <p className="text-[10px] uppercase tracking-[0.18em] text-muted sm:text-sm">
@@ -119,7 +158,7 @@ function Hero() {
         </h1>
 
         <p className="mt-5 text-xs leading-relaxed text-foreground/80 sm:mt-8 sm:max-w-md sm:text-lg">
-          Creating visual stories — from script to final cut.
+          Creating visual stories —<br className="sm:hidden" /> from script to final cut.
         </p>
 
         <div className="mt-5 grid grid-cols-1 gap-2 sm:mt-8 sm:max-w-xs sm:gap-3">
@@ -181,7 +220,7 @@ function HeroVideoLoop() {
 
 function About() {
   return (
-    <section id="about" className="mt-12 sm:mt-16">
+    <section id="about" className="mt-10 sm:mt-14">
       <div className="grid grid-cols-[auto_1fr] items-start gap-5 sm:gap-10">
         <div className="relative aspect-[4/5] w-24 shrink-0 overflow-hidden rounded-md bg-neutral-100 ring-1 ring-border sm:w-40">
           <Image
@@ -216,20 +255,23 @@ function About() {
 
 function ShortformShowreelSection({ onPlay }: { onPlay: () => void }) {
   return (
-    <section id="shortform-showreel" className="mt-32 sm:mt-40">
+    <section id="shortform-showreel" className="mt-20 sm:mt-24">
       <SectionHeader
         title="Short-Form Showreel"
         blurb="A short-form showreel featuring AI-assisted production, motion design, video editing, and animation."
       />
       <div className="relative">
-        <div className="mx-auto max-w-[360px] overflow-hidden rounded-md bg-black shadow-sm ring-1 ring-border">
+        <div className="mx-auto max-w-[320px] overflow-hidden rounded-md bg-black shadow-sm ring-1 ring-border sm:max-w-[360px]">
           <div className="aspect-[9/16]">
             <video
               src="/videos/short-form-showreel.mp4"
+              poster="/thumbnails/short-form-showreel-poster.jpg"
               controls
+              controlsList="nodownload noplaybackrate"
+              disablePictureInPicture
               playsInline
               preload="metadata"
-              className="h-full w-full"
+              className="h-full w-full object-cover"
             />
           </div>
         </div>
@@ -250,7 +292,7 @@ function ShortformShowreelSection({ onPlay }: { onPlay: () => void }) {
 function Showreel({ onPlay }: { onPlay: () => void }) {
   const yt = embedUrl(showreel);
   return (
-    <section id="animation-showreel" className="mt-32 sm:mt-40">
+    <section id="animation-showreel" className="mt-20 sm:mt-24">
       <SectionHeader
         title="Animation Showreel"
         blurb="A short compilation of 2D and After Effects animation work."
@@ -289,7 +331,7 @@ function Section({
   children: React.ReactNode;
 }) {
   return (
-    <section id={id} className="mt-32 sm:mt-40">
+    <section id={id} className="mt-20 sm:mt-24">
       {children}
     </section>
   );
@@ -297,7 +339,7 @@ function Section({
 
 function SectionHeader({ title, blurb }: { title: string; blurb?: string }) {
   return (
-    <div className="mb-12 flex flex-col gap-4 sm:mb-16 sm:flex-row sm:items-end sm:justify-between">
+    <div className="mb-8 flex flex-col gap-4 sm:mb-12 sm:flex-row sm:items-end sm:justify-between">
       <h2 className="font-serif text-3xl leading-tight tracking-tight sm:text-4xl">
         {title}
       </h2>
@@ -310,7 +352,7 @@ function SectionHeader({ title, blurb }: { title: string; blurb?: string }) {
 
 function Contact() {
   return (
-    <section id="contact" className="mt-32 sm:mt-40">
+    <section id="contact" className="mt-20 sm:mt-24">
       <div className="grid gap-12 border-t border-border pt-16 md:grid-cols-[1fr_auto]">
         <div>
           <p className="text-sm uppercase tracking-[0.18em] text-muted">
@@ -353,7 +395,7 @@ function Contact() {
 
 function Footer() {
   return (
-    <footer className="mt-24 flex flex-col items-start justify-between gap-4 border-t border-border pt-8 text-xs text-muted sm:flex-row sm:items-center">
+    <footer className="mt-16 flex flex-col items-start justify-between gap-4 border-t border-border pt-8 text-xs text-muted sm:flex-row sm:items-center">
       <p>© {new Date().getFullYear()} Arina Gusak. All work shown here is © its respective owners.</p>
       <p className="uppercase tracking-[0.16em]">
         Thanks for scrolling through! Feel free to point out any typos :)
